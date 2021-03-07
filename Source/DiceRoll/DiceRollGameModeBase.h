@@ -9,12 +9,18 @@
 /**
  *
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpenDiceMiniGameSignature);
+
 UCLASS()
 class DICEROLL_API ADiceRollGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Default")
 		bool bCanPlayDiceGame;
+	
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+		FOpenDiceMiniGameSignature OpenDiceMiniGame;
 };

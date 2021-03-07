@@ -3,10 +3,10 @@
 #include "InteractableObject.h"
 
 #include "DiceRollGameModeBase.h"
+#include "MainCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/TextRenderComponent.h"
-#include "GameFramework/Character.h"
 #include "Materials/Material.h"
 
 
@@ -47,13 +47,14 @@ void AInteractableObject::BeginPlay()
 	ExternalSphereCollider->OnComponentEndOverlap.AddDynamic(this, &AInteractableObject::OnComponentEndOverlap);
 }
 
-/*Questo metodo gestisce l'Overlap sia della sfera di collisione interna che quella esterna
- *Una volta Castato il PlayerCharacter cambia il Material ed è possibile cominciare a giocare al minigioco
+/*Questi 2 metodi gestiscono l'Overlap in Enter e in Exit sia della sfera di collisione interna che esterna
+ *Una volta assicurato che l'OtherActor sia il nostro MainCharacter, settiamo una variabile bCanPlayDiceGame in ADiceRollGameModeBase,
+ *cambiamo il Material alla SM e possiamo cominciare a giocare 
  */
 void AInteractableObject::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult)
 {
 
-	if(Cast<ACharacter>(OtherActor))
+	if(Cast<AMainCharacter>(OtherActor))
 	{
 		if(OverlappedComponent == InternalSphereCollider)
 		{
@@ -66,7 +67,6 @@ void AInteractableObject::OnComponentBeginOverlap(UPrimitiveComponent* Overlappe
 				if (ADiceRollGameModeBase* GameMode = Cast<ADiceRollGameModeBase>(GetWorld()->GetAuthGameMode()))
 				{
 					GameMode->bCanPlayDiceGame = true;
-					UE_LOG(LogTemp, Warning, TEXT("GameMode->bCanPlayDiceGame"));
 				}
 			}
 		}
@@ -82,7 +82,7 @@ void AInteractableObject::OnComponentBeginOverlap(UPrimitiveComponent* Overlappe
 
 void AInteractableObject::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex) 
 {
-	if (Cast<ACharacter>(OtherActor))
+	if (Cast<AMainCharacter>(OtherActor))
 	{
 		if (OverlappedComponent == InternalSphereCollider)
 		{
