@@ -22,6 +22,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MainCharacter | Component", meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* Camera;
+	
+	/*Il riferimento al playerController*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MainCharacter | Controller") 
+		class AMainPlayerController* MainPlayerController;
 public:
 	virtual void Tick(float DeltaTime) override;
 

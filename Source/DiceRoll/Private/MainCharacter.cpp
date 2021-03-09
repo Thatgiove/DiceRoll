@@ -9,8 +9,9 @@
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-
+#include "Player/MainPlayerController.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -37,12 +38,14 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0, 360.f, 0);
+
+	
 }
 
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	MainPlayerController = Cast<AMainPlayerController>(GetController());
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -111,13 +114,19 @@ void AMainCharacter::InvertedLookUp(float Rate)
 void AMainCharacter::Action()
 {
 	/*Chiamo l'evento di inizio del minigioco dei dadi. Questo evento avra un binding sulla level blueprint
-	 *per gestire la logica di movimento della camera. TODO: tutto ciò verrà fatto da un Actor ACAmeraDirector
-	 */
+	 *per gestire la logica di movimento della camera. */
 	if (ADiceRollGameModeBase* GameMode = Cast<ADiceRollGameModeBase>(GetWorld()->GetAuthGameMode()))
 	{
-		/*Chiamo l'evento di inizio gioco e non passo alcun parametro*/
+		/*Chiamo l'evento di inizio gioco e non passo alcun parametro e mostro l'HUD*/
 		if (GameMode->bCanPlayDiceGame)
+		{
+			if(MainPlayerController)
+			{
+				MainPlayerController->ShowHUD();
+				DisableInput(MainPlayerController);
+			}
 			GameMode->OpenDiceMiniGame.Broadcast();
+		}
 	}
 }
 
