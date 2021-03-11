@@ -12,23 +12,19 @@ UCLASS()
 class ADice : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
+
+public:
+
 	ADice();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	/*Un vettore che è perpendicolare al piano*/
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,  Category = "Default")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 		class UArrowComponent* NormalPlaneVector;
-	
-	/*La mesh del dado*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Static Mesh")
-		class UStaticMeshComponent* DiceMesh;
-	
+
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
 		class USceneComponent* Face1;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
@@ -45,17 +41,17 @@ protected:
 	/*L'array che contiene le facce dei dadi per fare le logiche di calcolo*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces")
 		TArray<USceneComponent*> DiceFacesArray;
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-private:
-	/*Funzione che ci dice se la mesh è ferma*/
-	float DiceMeshVelocity();
-
-	/*La faccia del dado */
-	uint8 GetDiceFace();
+public:
+	/*La mesh del dado*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Static Mesh")
+		class UStaticMeshComponent* DiceMesh;
 	
-	/*Funzione che ci dice se i vettori sono paralleli al NormalPlaneVector*/
-	bool CalculateIfVectorAreParallel();
+	/*Funzione che ritorna la velocità della mesh*/
+	UFUNCTION(BlueprintCallable) //TODO UFUNCTION solo per test
+	bool IsDiceStopped() const;
+
+	/*Funzione che calcola la faccia del dado*/
+	UFUNCTION(BlueprintCallable) //TODO UFUNCTION solo per test
+	int32 GetDiceFace();
 };

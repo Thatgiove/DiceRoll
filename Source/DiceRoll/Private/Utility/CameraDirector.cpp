@@ -32,6 +32,7 @@ void ACameraDirector::ChangeCamera()
 	 */
 	if(DiceTableCamera)
 	{
+		/*TODO castare il main controller*/
 		APlayerController* OurPlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
 		if (OurPlayerController && (OurPlayerController->GetViewTarget() != DiceTableCamera))

@@ -10,6 +10,7 @@
  *
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpenDiceMiniGameSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCloseDiceMiniGameSignature);
 
 UCLASS()
 class DICEROLL_API ADiceRollGameModeBase : public AGameModeBase
@@ -17,26 +18,25 @@ class DICEROLL_API ADiceRollGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	/*Il punto in cui creare i dadi da settare nell'istanza*/
-	UPROPERTY(EditAnywhere)
-		AActor* DiceSpawnPoint;
-
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Default")
 		bool bCanPlayDiceGame;
-
+	
+	/*****TODO togliere BlueprintCallable*/
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 		FOpenDiceMiniGameSignature OpenDiceMiniGame;
-
+	
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+		FCloseDiceMiniGameSignature CloseDiceMiniGame;
+	/*****TODO togliere BlueprintCallable*/
+	
 	int32 NumberOfDice;
 
 	int32 TotalDiceSum;
-	
+
 private:
 	/*l'array contenente gli ultimi 6 lanci*/
 	TArray<int32> DiceSumArray;
-
-	/*Creo i dadi in base al numero selezionato da giocatore*/
-	void SpawnDice(int32 NumberOfDice);
 
 	/*Per ogni dado presente nel mondo di gioco chiamo ricorsivamente questa
 	 * funzione e mi assicuro che la velocità sia 0 prima di poter calcolare
