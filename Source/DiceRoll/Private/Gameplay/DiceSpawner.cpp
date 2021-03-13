@@ -17,7 +17,7 @@ void ADiceSpawner::SpawnDice(int32 NumberOfDice)
 {
 
 	FActorSpawnParameters SpawnInfo;
-
+	/*todo controllare che ci siano dadi nel gioco poi chiamare CalculateDiceSum() in GameMode*/
 	for (int i = 1; i <= NumberOfDice; i++)
 	{
 		if (DiceToSpawn)
@@ -31,8 +31,8 @@ void ADiceSpawner::SpawnDice(int32 NumberOfDice)
 				{
 					/*todo sistemare i valori*/
 					/*Aggiunge un inpulso e un impulso angolare random*/
-					Dice->DiceMesh->AddImpulse(FVector(2000.f, 1.f, 1.f));
-					Dice->DiceMesh->AddAngularImpulseInRadians(FVector(2000.f, 1.f, 1.f));
+					Dice->DiceMesh->AddImpulse(FVector(1000.f, 1.f, 1.f));
+					Dice->DiceMesh->AddAngularImpulseInRadians(FVector(0.f, 1000.f, 1.f));
 				}
 			}
 		}

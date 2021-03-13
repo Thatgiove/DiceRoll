@@ -10,6 +10,7 @@
 ADice::ADice()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bIsStopped = false;
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
 	DiceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Dice StaticMesh"));
@@ -78,7 +79,8 @@ int32 ADice::GetDiceFace()
 }
 
 /*Solo se la DiceMesh è ferma possiamo fare i calcoli*/
-bool ADice::IsDiceStopped() const
+bool ADice::IsDiceStopped() 
 {
-	return DiceMesh && DiceMesh->IsSimulatingPhysics() && DiceMesh->GetComponentVelocity().Size() <= 0 ? true : false;
+	bIsStopped = DiceMesh && DiceMesh->IsSimulatingPhysics() && DiceMesh->GetComponentVelocity().Size() <= 0 ? true : false;
+	return bIsStopped;
 }

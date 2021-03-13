@@ -16,14 +16,13 @@ class ADice : public AActor
 public:
 
 	ADice();
-
+	UPROPERTY()
+		bool bIsStopped = true;
 protected:
 
 	/*Un vettore che è perpendicolare al piano*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 		class UArrowComponent* NormalPlaneVector;
-
-
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
 		class USceneComponent* Face1;
@@ -46,12 +45,12 @@ public:
 	/*La mesh del dado*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Static Mesh")
 		class UStaticMeshComponent* DiceMesh;
-	
+
 	/*Funzione che ritorna la velocità della mesh*/
 	UFUNCTION(BlueprintCallable) //TODO UFUNCTION solo per test
-	bool IsDiceStopped() const;
+		bool IsDiceStopped();
 
 	/*Funzione che calcola la faccia del dado*/
 	UFUNCTION(BlueprintCallable) //TODO UFUNCTION solo per test
-	int32 GetDiceFace();
+		int32 GetDiceFace();
 };

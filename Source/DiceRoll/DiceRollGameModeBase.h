@@ -18,34 +18,37 @@ class DICEROLL_API ADiceRollGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Default")
 		bool bCanPlayDiceGame;
-	
-	/*****TODO togliere BlueprintCallable*/
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-		FOpenDiceMiniGameSignature OpenDiceMiniGame;
-	
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-		FCloseDiceMiniGameSignature CloseDiceMiniGame;
-	/*****TODO togliere BlueprintCallable*/
-	
-	int32 NumberOfDice;
 
-	int32 TotalDiceSum;
+	UPROPERTY(BlueprintAssignable, BlueprintCallable) /*todo UPROPERTY solo per test*/
+		FOpenDiceMiniGameSignature OpenDiceMiniGame;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+		FCloseDiceMiniGameSignature CloseDiceMiniGame;/*todo UPROPERTY solo per test*/
+
+	/*Il numero totale dei dadi da lanciare*/
+	int32 NumberOfDice = 1;
+
+	/*La somma di tutte le facce*/
+	int32 TotalDiceSum = 0;
+
+	/*Evento dal FrontEnd*/
+	UFUNCTION(BlueprintCallable) /*todo solo per test*/
+		void HandleDiceSum();
 
 private:
 	/*l'array contenente gli ultimi 6 lanci*/
 	TArray<int32> DiceSumArray;
 
-	/*Per ogni dado presente nel mondo di gioco chiamo ricorsivamente questa
-	 * funzione e mi assicuro che la velocità sia 0 prima di poter calcolare
-	 * la somma*/
-	bool IsDiceVelocityZero() const;
-
+	/*la velocità dei dadi sul tavolo da gioco*/
+	UFUNCTION()
+		void IsDiceVelocityZero(TArray<AActor*> DiceInWorld);
+	
 	/*calcolo la somma di tutte le facce dei dadi presenti nel mondo di gioco*/
-	void CalculateDiceSum() const;
-
-	/*Quando tutti i dadi sono fermi aggiungo il risultato al DiceSumArray*/
+	void CalculateDiceSum(TArray<AActor*> DiceInWorld);
+	
+	/*Aggiunge il risultato al DiceSumArray*/
 	void AddSumToScoreArray(int32 Sum);
 };
