@@ -22,6 +22,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Default")
 		bool bCanPlayDiceGame;
 
+	/*Serve per il camera director*/
 	UPROPERTY(BlueprintAssignable, BlueprintCallable) /*todo UPROPERTY solo per test*/
 		FOpenDiceMiniGameSignature OpenDiceMiniGame;
 
@@ -30,27 +31,27 @@ public:
 
 	/*Il numero totale dei dadi da lanciare*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*todo UPROPERTY solo per test*/
-	int32 NumberOfDice = 3;
+		int32 NumberOfDice = 3;
 
 	/*La somma di tutte le facce*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*todo UPROPERTY solo per test*/
-	int32 TotalDiceSum = 0;
+		int32 TotalDiceSum = 0;
 
 	/*l'array contenente gli ultimi 6 lanci*/
 	TArray<int32> DiceSumArray;
 
 	/*Evento dal FrontEnd*/
 	UFUNCTION(BlueprintCallable) /*todo solo per test*/
-		void HandleDiceSum();
-	
+		void SpawnDiceAndCalculateSum();
+
 private:
 	/*la velocità dei dadi sul tavolo da gioco*/
 	UFUNCTION()
 		void IsDiceVelocityZero(TArray<AActor*> DiceInWorld);
-	
+
 	/*calcolo la somma di tutte le facce dei dadi presenti nel mondo di gioco*/
 	void CalculateDiceSum(TArray<AActor*> DiceInWorld);
-	
+
 	/*Aggiunge il risultato al DiceSumArray*/
 	void AddSumToScoreArray(int32 Sum);
 };

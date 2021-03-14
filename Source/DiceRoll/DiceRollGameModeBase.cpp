@@ -4,16 +4,26 @@
 #include "TimerManager.h"
 #include "Engine/Engine.h"
 #include "Gameplay/Dice.h"
+#include "Gameplay/DiceSpawner.h"
 #include "Kismet/GameplayStatics.h"
 
 
-void ADiceRollGameModeBase::HandleDiceSum() 
+void ADiceRollGameModeBase::SpawnDiceAndCalculateSum()
 {
+	/*Azzera la somma*/
+	TotalDiceSum = 0;
+
 	TArray<AActor*> DiceInWorld;
+
 	UWorld* World = GetWorld();
-	
+
 	if (World)
 	{
+		/*Chiama il DiceSpawner e genera i dadi nel mondo*/
+		ADiceSpawner* DiceSpawner = Cast<ADiceSpawner>(UGameplayStatics::GetActorOfClass(World, ADiceSpawner::StaticClass()));
+		if (DiceSpawner)
+			DiceSpawner->SpawnDice(NumberOfDice);
+
 		/*Prendo tutti le istanze Dice presenti nel mondo di gioco*/
 		UGameplayStatics::GetAllActorsOfClass(World, ADice::StaticClass(), DiceInWorld);
 
@@ -26,21 +36,21 @@ void ADiceRollGameModeBase::HandleDiceSum()
 		/*binding della funzione con parametri al timer*/
 		TimerDelegate.BindUFunction(this, FName("IsDiceVelocityZero"), DiceInWorld);
 
-		/*Chiama IsDiceVelocityZero in loop ogni secondo 
+		/*Chiama IsDiceVelocityZero in loop ogni secondo
 		 *per verificare che tutti i dadi siano fermi*/
 		World->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 1.f, true);
 	}
 }
 
-void ADiceRollGameModeBase::IsDiceVelocityZero(TArray<AActor*> DiceInWorld) 
+void ADiceRollGameModeBase::IsDiceVelocityZero(TArray<AActor*> DiceInWorld)
 {
 	/*Se solo un dado è fermo ritorna false*/
 	for (auto dice : DiceInWorld)
 	{
 		ADice* Dice = Cast<ADice>(dice);
-		if(Dice)
+		if (Dice)
 		{
-			if(Dice->IsDiceStopped() == false)
+			if (Dice->IsDiceStopped() == false)
 				return;
 		}
 	}

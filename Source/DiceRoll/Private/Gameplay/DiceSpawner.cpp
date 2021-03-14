@@ -13,22 +13,12 @@ ADiceSpawner::ADiceSpawner()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void ADiceSpawner::SpawnDice()
+void ADiceSpawner::SpawnDice(int32 NumberOfDice)
 {
 	/*info*/
 	FActorSpawnParameters SpawnInfo;
 	
 	TArray<AActor*> DiceInWorld;
-
-	/*Una copia della variabile per chiamare ricorsivamente la funzione*/
-	int32 NumberOfDice = 0;
-	
-	/*GameMode per prendere numero di dadi e azzerare la somma*/
-	if (ADiceRollGameModeBase* GameMode = Cast<ADiceRollGameModeBase>(GetWorld()->GetAuthGameMode()))
-	{
-		NumberOfDice = GameMode->NumberOfDice;
-		GameMode->TotalDiceSum = 0;
-	}
 
 	UWorld* World = GetWorld();
 	
@@ -45,7 +35,7 @@ void ADiceSpawner::SpawnDice()
 				World->DestroyActor(dice);
 			}
 			/*Richiamo questa stessa funzione*/
-			SpawnDice();
+			SpawnDice(NumberOfDice);
 		}
 		/*Altimenti creo le istanze*/
 		else
