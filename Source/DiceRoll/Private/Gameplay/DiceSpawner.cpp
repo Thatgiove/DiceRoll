@@ -1,41 +1,84 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "DiceSpawner.h"
+#include "DiceRollGameModeBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "Gameplay/Dice.h"
 #include "Engine/World.h"
-// Sets default values
+#include "Kismet/GameplayStatics.h"
+
+
 ADiceSpawner::ADiceSpawner()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-
-void ADiceSpawner::SpawnDice(int32 NumberOfDice)
+void ADiceSpawner::SpawnDice()
 {
-
+	/*info*/
 	FActorSpawnParameters SpawnInfo;
-	/*todo controllare che ci siano dadi nel gioco poi chiamare CalculateDiceSum() in GameMode*/
-	for (int i = 1; i <= NumberOfDice; i++)
+	
+	TArray<AActor*> DiceInWorld;
+
+	/*Una copia della variabile per chiamare ricorsivamente la funzione*/
+	int32 NumberOfDice = 0;
+	
+	/*GameMode per prendere numero di dadi e azzerare la somma*/
+	if (ADiceRollGameModeBase* GameMode = Cast<ADiceRollGameModeBase>(GetWorld()->GetAuthGameMode()))
 	{
-		if (DiceToSpawn)
+		NumberOfDice = GameMode->NumberOfDice;
+		GameMode->TotalDiceSum = 0;
+	}
+
+	UWorld* World = GetWorld();
+	
+	if (World)
+	{
+		/*Le Istanze dado nel mondo di gioco */
+		UGameplayStatics::GetAllActorsOfClass(World, ADice::StaticClass(), DiceInWorld);
+
+		/*Se esistono le distruggo*/
+		if (DiceInWorld.Num() > 0)
 		{
-			UWorld* World = GetWorld();
-			if (World)
+			for (auto dice : DiceInWorld)
 			{
-				ADice* Dice = World->SpawnActor<ADice>(DiceToSpawn, GetActorLocation(), GetActorRotation(), SpawnInfo);
-				/*Controlla che ci sia la mesh e che la simulazione fisica sia attiva*/
-				if (Dice->DiceMesh && Dice->DiceMesh->IsSimulatingPhysics())
+				World->DestroyActor(dice);
+			}
+			/*Richiamo questa stessa funzione*/
+			SpawnDice();
+		}
+		/*Altimenti creo le istanze*/
+		else
+		{
+			for (int i = 1; i <= NumberOfDice; i++)
+			{
+				if (DiceToSpawn)
 				{
-					/*todo sistemare i valori*/
-					/*Aggiunge un inpulso e un impulso angolare random*/
-					Dice->DiceMesh->AddImpulse(FVector(1000.f, 1.f, 1.f));
-					Dice->DiceMesh->AddAngularImpulseInRadians(FVector(0.f, 1000.f, 1.f));
+					/*Spawn dei dadi*/
+					ADice* Dice = World->SpawnActor<ADice>(DiceToSpawn, GetActorLocation(), GetActorRotation(), SpawnInfo);
+
+					/*Controlla che ci sia la mesh e che la simulazione fisica sia attiva*/
+					if (Dice->DiceMesh && Dice->DiceMesh->IsSimulatingPhysics())
+					{
+						/*Randomizza i valori del vettore*/
+						float RandomValue = FMath::RandRange(-500.f, 500.f);
+						FVector RandomVector = FVector(RandomValue, RandomValue, RandomValue);
+
+						/*Se il dado è solo 1 scala il vettore per avere un extra boost*/
+						if (NumberOfDice == 1)
+							RandomVector.X *= 10.f;
+						
+						/*Aggiunge un inpulso e un impulso angolare random*/
+						Dice->DiceMesh->AddImpulse(RandomVector);
+						Dice->DiceMesh->AddAngularImpulseInRadians(RandomVector);
+						/*UE_LOG(LogTemp, Warning, TEXT("Text, %s "), *RandomVector.ToString());*/
+					}
+
 				}
 			}
 		}
+
 	}
+	
 }
 

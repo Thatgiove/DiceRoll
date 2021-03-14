@@ -29,19 +29,21 @@ public:
 		FCloseDiceMiniGameSignature CloseDiceMiniGame;/*todo UPROPERTY solo per test*/
 
 	/*Il numero totale dei dadi da lanciare*/
-	int32 NumberOfDice = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*todo UPROPERTY solo per test*/
+	int32 NumberOfDice = 3;
 
 	/*La somma di tutte le facce*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*todo UPROPERTY solo per test*/
 	int32 TotalDiceSum = 0;
+
+	/*l'array contenente gli ultimi 6 lanci*/
+	TArray<int32> DiceSumArray;
 
 	/*Evento dal FrontEnd*/
 	UFUNCTION(BlueprintCallable) /*todo solo per test*/
 		void HandleDiceSum();
-
+	
 private:
-	/*l'array contenente gli ultimi 6 lanci*/
-	TArray<int32> DiceSumArray;
-
 	/*la velocità dei dadi sul tavolo da gioco*/
 	UFUNCTION()
 		void IsDiceVelocityZero(TArray<AActor*> DiceInWorld);

@@ -22,6 +22,6 @@ public:
 	/*todo togliere BlueprintCallable*/
 	/*Creo i dadi in base al numero selezionato da giocatore*/
 	UFUNCTION(BlueprintCallable)
-		void SpawnDice(int32 NumberOfDice);
+		void SpawnDice();
 
 };

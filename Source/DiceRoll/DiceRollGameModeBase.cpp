@@ -57,5 +57,12 @@ void ADiceRollGameModeBase::CalculateDiceSum(TArray<AActor*> DiceInWorld)
 		ADice* Dice = Cast<ADice>(dice);
 		TotalDiceSum += Dice->GetDiceFace();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("SUM= %d "), TotalDiceSum);
+	AddSumToScoreArray(TotalDiceSum);
+	/*UE_LOG(LogTemp, Warning, TEXT("SUM= %d "), TotalDiceSum);*/
+}
+
+void ADiceRollGameModeBase::AddSumToScoreArray(int32 Sum)
+{
+	if (DiceSumArray.Num() <= 6)
+		DiceSumArray.Add(Sum);
 }

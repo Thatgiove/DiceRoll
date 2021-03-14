@@ -29,5 +29,9 @@ public:
 
 	/*La funzione deve essere segnata come UFUNCTION per poter essere bindata*/
 	UFUNCTION()
-		void ChangeCamera();
+		void CameraToTable();
+
+	/*La funzione deve essere segnata come UFUNCTION per poter essere bindata*/
+	UFUNCTION()
+		void CameraToPlayer();
 };
