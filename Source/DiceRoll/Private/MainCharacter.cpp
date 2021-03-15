@@ -117,14 +117,9 @@ void AMainCharacter::Action()
 	 *per gestire la logica di movimento della camera. */
 	if (ADiceRollGameModeBase* GameMode = Cast<ADiceRollGameModeBase>(GetWorld()->GetAuthGameMode()))
 	{
-		/*Chiamo l'evento di inizio gioco e non passo alcun parametro e mostro l'HUD*/
+		/*Questo evento viene intercettao dal playerController*/
 		if (GameMode->bCanPlayDiceGame)
 		{
-			if(MainPlayerController)
-			{
-				MainPlayerController->ShowHUD();
-				DisableInput(MainPlayerController);
-			}
 			GameMode->OpenDiceMiniGame.Broadcast();
 		}
 	}

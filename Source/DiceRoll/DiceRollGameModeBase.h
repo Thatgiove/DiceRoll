@@ -9,8 +9,10 @@
 /**
  *
  */
+ /*Delegati che gestiscono eventi di apertura e chiusura del minigioco di dadi*/
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpenDiceMiniGameSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCloseDiceMiniGameSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateScoreArraySignature);
 
 UCLASS()
 class DICEROLL_API ADiceRollGameModeBase : public AGameModeBase
@@ -22,26 +24,31 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Default")
 		bool bCanPlayDiceGame;
 
-	/*Serve per il camera director*/
-	UPROPERTY(BlueprintAssignable, BlueprintCallable) /*todo UPROPERTY solo per test*/
+	/*specifico per il camera director e HUD nel playerController*/
+	UPROPERTY()
 		FOpenDiceMiniGameSignature OpenDiceMiniGame;
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-		FCloseDiceMiniGameSignature CloseDiceMiniGame;/*todo UPROPERTY solo per test*/
+	/*specifico per il camera director e HUD nel playerController*/
+	UPROPERTY()
+		FCloseDiceMiniGameSignature CloseDiceMiniGame;
+
+	/*specifico per lo score HUD*/
+	UPROPERTY()
+		FCloseDiceMiniGameSignature UpdateScoreArray;
 
 	/*Il numero totale dei dadi da lanciare*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*todo UPROPERTY solo per test*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		int32 NumberOfDice = 3;
 
 	/*La somma di tutte le facce*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*todo UPROPERTY solo per test*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		int32 TotalDiceSum = 0;
 
 	/*l'array contenente gli ultimi 6 lanci*/
 	TArray<int32> DiceSumArray;
 
 	/*Evento dal FrontEnd*/
-	UFUNCTION(BlueprintCallable) /*todo solo per test*/
+	UFUNCTION()
 		void SpawnDiceAndCalculateSum();
 
 private:

@@ -71,8 +71,17 @@ void ADiceRollGameModeBase::CalculateDiceSum(TArray<AActor*> DiceInWorld)
 	/*UE_LOG(LogTemp, Warning, TEXT("SUM= %d "), TotalDiceSum);*/
 }
 
+/*Agginuge gli ultimi 6 lanci nella lista dei punteggi*/
 void ADiceRollGameModeBase::AddSumToScoreArray(int32 Sum)
 {
-	if (DiceSumArray.Num() <= 6)
+	if (DiceSumArray.Num() < 6)
+	{
 		DiceSumArray.Add(Sum);
+		
+		/*Questo evento viene intercettato dal HUD*/
+		UpdateScoreArray.Broadcast();
+	}
+		
+
+	
 }

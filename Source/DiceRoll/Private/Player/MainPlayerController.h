@@ -15,10 +15,11 @@ class AMainPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	
-	void ShowHUD();
+	UFUNCTION()
+		void ShowHUD();
 
-	void HideHud();
+	UFUNCTION()
+		void HideHud();
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,7 +29,7 @@ protected:
 		TSubclassOf<class UUserWidget> UserOverlayAsset;
 
 	/*Il Widget che userò in Game*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UPROPERTY()
 		UUserWidget* DiceGameHud;
 
 

@@ -27,11 +27,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		AActor* DiceTableCamera;
 
-	/*La funzione deve essere segnata come UFUNCTION per poter essere bindata*/
+	/*La funzione deve essere segnata come UFUNCTION per poter essere bindata
+	 *Intercetta l'evento open e close del minigame nella GameMode
+	 */
 	UFUNCTION()
-		void CameraToTable();
-
-	/*La funzione deve essere segnata come UFUNCTION per poter essere bindata*/
-	UFUNCTION()
-		void CameraToPlayer();
+		void SwitchCamera();
 };

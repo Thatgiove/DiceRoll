@@ -18,19 +18,22 @@ void ACameraDirector::BeginPlay()
 	/*Registro il metodo al delegato del GameMode*/
 	if (ADiceRollGameModeBase* GameMode = Cast<ADiceRollGameModeBase>(GetWorld()->GetAuthGameMode()))
 	{
-		GameMode->OpenDiceMiniGame.AddDynamic(this, &ACameraDirector::CameraToTable);
-		GameMode->CloseDiceMiniGame.AddDynamic(this, &ACameraDirector::CameraToPlayer);
+		/*questo evento scatta quando si preme il tasto azione nell'Interactable object*/
+		GameMode->OpenDiceMiniGame.AddDynamic(this, &ACameraDirector::SwitchCamera);
+
+		/*questo evento scatta al click del tasto close dell'HUD*/
+		GameMode->CloseDiceMiniGame.AddDynamic(this, &ACameraDirector::SwitchCamera);
 	}
 }
 
 /*Dalla camera del player a quella del tavolo*/
-void ACameraDirector::CameraToTable()
+void ACameraDirector::SwitchCamera()
 {
 	const float SmoothBlendTime = 0.75f;
 	
-	/*Se presente la nuova camera mi muovo in transizione verso di essa;
+	/*Se presente la Camera sopra il tavolo da gioco mi muovo in transizione verso di essa;
 	 *allo stesso modo mi assicuro che la l'attuale camera non sia quella
-	 *del player controller
+	 *del player controller; in caso contrario mi muovo verso il POV del Pawn
 	 */
 	if(DiceTableCamera)
 	{
@@ -38,13 +41,14 @@ void ACameraDirector::CameraToTable()
 
 		if (OurPlayerController && (OurPlayerController->GetViewTarget() != DiceTableCamera))
 		{
+			/*Dal Pawn alla camera*/
 			OurPlayerController->SetViewTargetWithBlend(DiceTableCamera, SmoothBlendTime);
+		}
+		else
+		{
+			/*Dalla camera al Pawn*/
+			OurPlayerController->SetViewTargetWithBlend(OurPlayerController->GetPawn(), SmoothBlendTime);
 		}
 	}
 }
 
-/*Dalla camera del tavolo a quella del player*/
-void ACameraDirector::CameraToPlayer()
-{
-
-}

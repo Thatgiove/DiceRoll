@@ -19,9 +19,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ADice> DiceToSpawn;
 	
-	/*todo togliere BlueprintCallable*/
+
 	/*Creo i dadi in base al numero selezionato da giocatore*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 		void SpawnDice(int32 NumberOfDice);
 
 };

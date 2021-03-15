@@ -47,10 +47,10 @@ public:
 		class UStaticMeshComponent* DiceMesh;
 
 	/*Funzione che ritorna la velocità della mesh*/
-	UFUNCTION(BlueprintCallable) //TODO UFUNCTION solo per test
+	UFUNCTION()
 		bool IsDiceStopped();
 
 	/*Funzione che calcola la faccia del dado*/
-	UFUNCTION(BlueprintCallable) //TODO UFUNCTION solo per test
+	UFUNCTION() 
 		int32 GetDiceFace();
 };
