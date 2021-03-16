@@ -17,10 +17,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MainCharacter | Component", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainCharacter | Component", meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MainCharacter | Component", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainCharacter | Component", meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* Camera;
 	
 	/*Il riferimento al playerController*/

@@ -24,19 +24,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 		class UArrowComponent* NormalPlaneVector;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
-		class USceneComponent* Face1;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
-		class USceneComponent* Face2;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
-		class USceneComponent* Face3;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
-		class USceneComponent* Face4;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
-		class USceneComponent* Face5;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces", meta = (AllowPrivateAccess = "true"))
-		class USceneComponent* Face6;
-
 	/*L'array che contiene le facce dei dadi per fare le logiche di calcolo*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Dice Faces")
 		TArray<USceneComponent*> DiceFacesArray;
@@ -50,7 +37,7 @@ public:
 	UFUNCTION()
 		bool IsDiceStopped();
 
-	/*Funzione che calcola la faccia del dado*/
-	UFUNCTION() 
+	/*Calcola la faccia del dado*/
+	UFUNCTION()
 		int32 GetDiceFace();
 };
